@@ -1,0 +1,3 @@
+ssh-up() {
+	eval $(keychain --clear --eval id_ed25519 github)
+}

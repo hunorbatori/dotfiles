@@ -1,0 +1,5 @@
+[user]
+	email = batorihunor@gmail.com
+	name = Hunor Batori
+[alias]
+	xlog = log --graph --pretty=format:'%Cgreen(%ci) %C(yellow)%h%Creset -%C(green)<%an>%Creset -%C(white)%d%Creset %s' --abbrev-commit -40

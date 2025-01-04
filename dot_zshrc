@@ -1,0 +1,59 @@
+# Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
+# Initialization code that may require console input (password prompts, [y/n]
+# confirmations, etc.) must go above this block; everything else may go below.
+if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
+  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+fi
+
+source ~/.zsh/powerlevel10k/powerlevel10k.zsh-theme
+
+# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
+[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+
+fpath=(~/.zsh/zsh-completions/src $fpath)
+
+source ~/.zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+source ~/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh
+source ~/.zsh-autosuggestions.zsh
+source ~/.nnn-conf
+source ~/.zsh/fzf-tab/fzf-tab.plugin.zsh
+
+# Enable fzf fuzzy find shell integration
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+
+# KeyBindings
+# Jump forward in prompt on ctrl+arrowRight
+bindkey "^[[1;5C" forward-word
+# Jump backward in prompt on ctrl+arrowLeft
+bindkey "^[[1;5D" backward-word
+# History search on ctrl+arrowUp
+bindkey "^[[1;5A" history-search-backward
+# History search on ctrl+arrowDown
+bindkey "^[[1;5B" history-search-forward
+
+# Enable and configure zsh histroy
+HISTFILE=~/.zsh_history
+HISTSIZE=10000
+SAVEHIST=10000
+HISTUDP=erase
+setopt share_history
+setopt hist_ignore_space
+setopt hist_ignore_all_dups
+setopt hist_save_no_dups
+setopt hist_ignore_dups
+setopt hist_find_no_dups
+
+# Set default editor to nano
+export EDITOR=nano
+
+# Load completions on start
+autoload -U compinit && compinit
+
+# Completion styling
+# Color folders according to ls --color
+zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}"
+# Disable default menu in favow of fzf-tab
+zstyle ':completion:*' menu no
+
+# Aliases
+alias ls='ls --color'
