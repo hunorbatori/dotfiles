@@ -27,7 +27,7 @@ fpath=(~/.zsh/zsh-completions/src $fpath)
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
 # Enable jump
-eval "$(jump shell)"
+eval "$(jump shell zsh)"
 
 # KeyBindings
 # Jump forward in prompt on ctrl+arrowRight
