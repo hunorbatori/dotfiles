@@ -105,7 +105,7 @@ git clone https://github.com/Aloxaf/fzf-tab ~/.zsh/fzf-tab
 
 # Clean up
 echo "Cleaning up..."
-apt autoremove -y
-apt autoclean -y
+sudo apt autoremove -y
+sudo apt autoclean -y
 
 green_echo "Initialization complete! Please reboot the system if necessary."
