@@ -12,7 +12,7 @@ green_echo "Starting system initialization..."
 
 # Update and upgrade system packages
 green_echo "Updating and upgrading system packages..."
-sudo apt update && apt upgrade -y
+sudo apt update && sudo apt upgrade -y
 
 # Install essential tools
 ESSENTIAL_TOOLS=(
