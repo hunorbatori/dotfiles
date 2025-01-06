@@ -1,5 +1,5 @@
 #!/bin/sh
-export NNN_PLUG='f:~/.config/nnn/plugins/fzopen;d:~/.config/nnn/plugins/fzcd;p:~/.config/nnn/plugins/preview-tui;'
+export NNN_PLUG='f:~/.config/nnn/plugins/fzopen;d:~/.config/nnn/plugins/fzcd;p:~/.config/nnn/plugins/preview-tui;j:~/.config/nnn/plugins/autojump'
 
 # Customize colors. 00 means default. Other colors are hexa versionf of the xterm colors i.e 231 (ffffff) is E6 in hexa.
 BLK="00" CHR="00" DIR="E6" EXE="31" REG="00" HARDLINK="00" SYMLINK="06" MISSING="00" ORPHAN="00" FIFO="00" SOCK="00" OTHER="00"
