@@ -24,11 +24,12 @@ ESSENTIAL_TOOLS=(
 green_echo "Installing essential tools: ${ESSENTIAL_TOOLS[*]}"
 sudo apt install -y "${ESSENTIAL_TOOLS[@]}"
 
+green_echo "Configuring tmux and installing plugins"
 git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
-
 mkdir -p ~/.config/tmux/
-touch ~/.config/tmux/tmux.conf
+# touch ~/.config/tmux/tmux.conf
 tmux source ~/.config/tmux/tmux.conf
+~/.tmux/plugins/tpm/bin/install_plugins
 
 green_echo "Setting zsh as the default shell"
 chsh -s $(which zsh)
