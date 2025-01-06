@@ -24,28 +24,18 @@ ESSENTIAL_TOOLS=(
 green_echo "Installing essential tools: ${ESSENTIAL_TOOLS[*]}"
 sudo apt install -y "${ESSENTIAL_TOOLS[@]}"
 
-green_echo "Configuring tmux and installing plugins"
-git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
-mkdir -p ~/.config/tmux/
-tmux source ~/.config/tmux/tmux.conf
-~/.tmux/plugins/tpm/bin/install_plugins
+if [ -d "~/.tmux/plugins/tpm/.git" ]; then
+	green_echo "TPM is already installed, skipping..."
+else
+	green_echo "Configuring tmux and installing plugins"
+	git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
+	mkdir -p ~/.config/tmux/
+	tmux source ~/.config/tmux/tmux.conf
+	~/.tmux/plugins/tpm/bin/install_plugins
+fi
 
 green_echo "Setting zsh as the default shell"
 chsh -s $(which zsh)
-
-# Install development tools
-DEV_TOOLS=(
-  python3
-  python3-pip
-  openjdk-11-jdk
-  nodejs
-  npm
-  docker.io
-  docker-compose
-)
-
-# echo "Installing development tools: ${DEV_TOOLS[*]}"
-# apt install -y "${DEV_TOOLS[@]}"
 
 # Install preferred utilities
 UTILITIES=(
@@ -64,53 +54,79 @@ UTILITIES=(
 green_echo "Installing utilities: ${UTILITIES[*]}"
 sudo apt install -y "${UTILITIES[@]}"
 
-green_echo "Symlinking batcat to bat"
-sudo ln -s /usr/bin/batcat /usr/bin/bat
+if [ -L " /usr/bin/bat" ]; then
+	green_echo "bat symlink already exists, skipping..."
+else
+	green_echo "Symlinking batcat to bat"
+	sudo ln -s /usr/bin/batcat /usr/bin/bat
+fi
 
-green_echo "Installing nnn from static binary"
-wget -P /tmp "${NNN_BINARY_URL}/${NNN_BINARY_ARCHIVE}"
-tar -xzf /tmp/${NNN_BINARY_ARCHIVE} -C /tmp
-mv /tmp/nnn-nerd-static /tmp/nnn
-sudo mv /tmp/nnn /usr/local/bin/
+if command -v nnn &>/dev/null; then
+	green_echo "nnn is already installed, skipping..."
+else
+	green_echo "Installing nnn from static binary"
+	wget -P /tmp "${NNN_BINARY_URL}/${NNN_BINARY_ARCHIVE}"
+	tar -xzf /tmp/${NNN_BINARY_ARCHIVE} -C /tmp
+	mv /tmp/nnn-nerd-static /tmp/nnn
+	sudo mv /tmp/nnn /usr/local/bin/
+fi
 
-green_echo "Downloading and installing jump"
-wget -P /tmp https://github.com/gsamokovarov/jump/releases/download/v0.51.0/jump_0.51.0_amd64.deb
-sudo dpkg -i /tmp/jump_0.51.0_amd64.deb
+if command -v jump &>/dev/null; then
+        green_echo "jump is already installed, skipping..."
+else
+	green_echo "Downloading and installing jump"
+	wget -P /tmp https://github.com/gsamokovarov/jump/releases/download/v0.51.0/jump_0.51.0_>
+	sudo dpkg -i /tmp/jump_0.51.0_amd64.deb
+fi
 
-green_echo "Downloading nnn plugins"
-sh -c "$(curl -Ls https://raw.githubusercontent.com/jarun/nnn/master/plugins/getplugs)"
+if [ -d "~/.config/nnn/plugins" ] then
+	green_echo "nnn plugins already existm, skipping..."
+else
+	green_echo "Downloading nnn plugins"
+	sh -c "$(curl -Ls https://raw.githubusercontent.com/jarun/nnn/master/plugins/getplugs)"
+fi
 
 green_echo "Installing zsh plugins and theme"
-# mkdir -p ~/.zsh/powerlevel10k
-git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ~/.zsh/powerlevel10k
 
-# mkdir -p ~/.zsh/zsh-syntax-highlighting
-git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ~/.zsh/zsh-syntax-highlighting
+if [ -d "~/.zsh/powerlevel10k/.git" ]; then
+	green_echo "pl10k is already cloned, skipping..."
+else
+	git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ~/.zsh/powerlevel10k
+fi
 
-# mkdir -p ~/.zsh/zsh-autosuggestions
-git clone https://github.com/zsh-users/zsh-autosuggestions ~/.zsh/zsh-autosuggestions
+if [ -d "~/.zsh/zsh-syntax-highlighting/.git" ]; then
+        green_echo "zsh-syntax-highlighting is already cloned, skipping..."
+else
+	git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ~/.zsh/zsh-syntax-highlighting
+fi
 
-# mkdir -p ~/.zsh/zsh-completions
-git clone https://github.com/zsh-users/zsh-completions.git ~/.zsh/zsh-completions
+if [ -d "~/.zsh/zsh-autosuggestions/.git" ]; then
+        green_echo "zsh-autosuggestions is already cloned, skipping..."
+else
+	git clone https://github.com/zsh-users/zsh-autosuggestions ~/.zsh/zsh-autosuggestions
+fi
 
-# mkdir -p ~/.zsh/fzf
-git clone --depth 1 https://github.com/junegunn/fzf.git ~/.zsh/fzf
+if [ -d "~/.zsh/zsh-completions/.git" ]; then
+        green_echo "zsh-completions is already cloned, skipping..."
+else
+	git clone https://github.com/zsh-users/zsh-completions.git ~/.zsh/zsh-completions
+fi
 
-~/.zsh/fzf/install --key-bindings --completion --no-update-rc --no-bash --no-zsh --no-fish
+if [ -d "~/.zsh/fzf-tab/.git" ]; then
+        green_echo "fzf-tab is already cloned, skipping..."
+else
+	git clone https://github.com/Aloxaf/fzf-tab ~/.zsh/fzf-tab
+fi
 
-# mkdir -p ~/.zsh/fzf-tab
-git clone https://github.com/Aloxaf/fzf-tab ~/.zsh/fzf-tab
-
-
-# Configure Git (Optional)
-# echo "Configuring Git..."
-# read -p "Enter your Git name: " GIT_NAME
-# read -p "Enter your Git email: " GIT_EMAIL
-# git config --global user.name "$GIT_NAME"
-# git config --global user.email "$GIT_EMAIL"
+if [ -d "~/.zsh/fzf/.git" ]; then
+        green_echo "fzf is already cloned, skipping..."
+else
+	git clone --depth 1 https://github.com/junegunn/fzf.git ~/.zsh/fzf
+	~/.zsh/fzf/install --key-bindings --completion --no-update-rc --no-bash --no-zsh --no-fish
+fi
 
 # Clean up
-echo "Cleaning up..."
+green_echo "Cleaning up..."
 sudo apt autoremove -y
 sudo apt autoclean -y
 
