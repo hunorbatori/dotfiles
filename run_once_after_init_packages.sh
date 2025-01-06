@@ -75,7 +75,7 @@ if command -v jump &>/dev/null; then
         green_echo "jump is already installed, skipping..."
 else
 	green_echo "Downloading and installing jump"
-	wget -P /tmp https://github.com/gsamokovarov/jump/releases/download/v0.51.0/jump_0.51.0_>
+	wget -P /tmp https://github.com/gsamokovarov/jump/releases/download/v0.51.0/jump_0.51.0_amd64.deb
 	sudo dpkg -i /tmp/jump_0.51.0_amd64.deb
 fi
 
