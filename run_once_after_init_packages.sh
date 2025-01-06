@@ -79,7 +79,7 @@ else
 	sudo dpkg -i /tmp/jump_0.51.0_amd64.deb
 fi
 
-if [ -d "~/.config/nnn/plugins" ] then
+if [ -d "~/.config/nnn/plugins" ]; then
 	green_echo "nnn plugins already existm, skipping..."
 else
 	green_echo "Downloading nnn plugins"
