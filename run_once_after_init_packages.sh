@@ -73,6 +73,10 @@ tar -xzf /tmp/${NNN_BINARY_ARCHIVE} -C /tmp
 mv /tmp/nnn-nerd-static /tmp/nnn
 sudo mv /tmp/nnn /usr/local/bin/
 
+green_echo "Downloading and installing jump"
+wget -P /tmp https://github.com/gsamokovarov/jump/releases/download/v0.51.0/jump_0.51.0_amd64.deb
+sudo dpkg -i /tmp/jump_0.51.0_amd64.deb
+
 green_echo "Downloading nnn plugins"
 sh -c "$(curl -Ls https://raw.githubusercontent.com/jarun/nnn/master/plugins/getplugs)"
 

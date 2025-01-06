@@ -26,6 +26,9 @@ fpath=(~/.zsh/zsh-completions/src $fpath)
 # Enable fzf fuzzy find shell integration
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
+# Enable jump
+eval "$(jump shell)"
+
 # KeyBindings
 # Jump forward in prompt on ctrl+arrowRight
 bindkey "^[[1;5C" forward-word
