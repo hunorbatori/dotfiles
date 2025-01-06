@@ -4,10 +4,10 @@ NNN_BINARY_URL=https://github.com/jarun/nnn/releases/download/v5.0
 NNN_BINARY_ARCHIVE=nnn-nerd-static-5.0.x86_64.tar.gz
 
 # Ensure the script runs as root or with sudo
-if [[ "$EUID" -ne 0 ]]; then
-  echo "Please run as root or use sudo."
-  exit 1
-fi
+# if [[ "$EUID" -ne 0 ]]; then
+#  echo "Please run as root or use sudo."
+#  exit 1
+# fi
 
 # Ensure the script uses the calling user's home directory
 USER_HOME=$(eval echo "~$SUDO_USER")
@@ -17,7 +17,7 @@ echo "Starting system initialization..."
 
 # Update and upgrade system packages
 echo "Updating and upgrading system packages..."
-apt update && apt upgrade -y
+sudo apt update && apt upgrade -y
 
 # Install essential tools
 ESSENTIAL_TOOLS=(
@@ -27,7 +27,7 @@ ESSENTIAL_TOOLS=(
 )
 
 echo "Installing essential tools: ${ESSENTIAL_TOOLS[*]}"
-apt install -y "${ESSENTIAL_TOOLS[@]}"
+sudo apt install -y "${ESSENTIAL_TOOLS[@]}"
 
 mkdir -p $USER_HOME/.config/tmux/
 touch $USER_HOME/.config/tmux/tmux.conf
@@ -65,7 +65,7 @@ UTILITIES=(
 )
 
 echo "Installing utilities: ${UTILITIES[*]}"
-apt install -y "${UTILITIES[@]}"
+sudo apt install -y "${UTILITIES[@]}"
 
 echo "Symlinking batcat to bat"
 ln -s /usr/bin/batcat /usr/bin/bat
