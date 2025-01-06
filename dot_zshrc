@@ -17,6 +17,7 @@ source ~/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh
 source ~/.zsh-autosuggestions.zsh
 source ~/.nnn-conf
 source ~/.zsh/fzf-tab/fzf-tab.plugin.zsh
+source ~/.global_functions
 
 # Enable fzf fuzzy find shell integration
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
