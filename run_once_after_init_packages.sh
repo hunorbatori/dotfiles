@@ -34,8 +34,14 @@ else
 	~/.tmux/plugins/tpm/bin/install_plugins
 fi
 
-green_echo "Setting zsh as the default shell"
-chsh -s $(which zsh)
+if [ "$(basename "$SHELL")" != "zsh" ]; then
+	green_echo "Setting zsh as the default shell"
+	chsh -s $(which zsh)
+else
+	green_echo "Default shell is already zsh, skipping..."
+fi
+
+
 
 # Install preferred utilities
 UTILITIES=(
