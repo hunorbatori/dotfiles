@@ -24,6 +24,8 @@ ESSENTIAL_TOOLS=(
 green_echo "Installing essential tools: ${ESSENTIAL_TOOLS[*]}"
 sudo apt install -y "${ESSENTIAL_TOOLS[@]}"
 
+git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
+
 mkdir -p ~/.config/tmux/
 touch ~/.config/tmux/tmux.conf
 tmux source ~/.config/tmux/tmux.conf
