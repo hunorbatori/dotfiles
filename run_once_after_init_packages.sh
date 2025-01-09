@@ -3,7 +3,7 @@
 # Check if running on a Debian-based or Ubuntu system
 if ! grep -qiE "debian|ubuntu" /etc/os-release; then
     echo "This script must be run on a Debian-based or Ubuntu system."
-    exit 1
+    exit 0
 fi
 
 # If the check passes, continue with the script
