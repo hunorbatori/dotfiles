@@ -1,5 +1,15 @@
 #!/bin/bash
 
+# Check if running on a Debian-based or Ubuntu system
+if ! grep -qiE "debian|ubuntu" /etc/os-release; then
+    echo "This script must be run on a Debian-based or Ubuntu system."
+    exit 1
+fi
+
+# If the check passes, continue with the script
+echo "Running on a Debian-based or Ubuntu system."
+
+
 green_echo() {
     echo -e "\e[32m$1\e[0m"
 }
