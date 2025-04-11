@@ -29,6 +29,7 @@ ESSENTIAL_TOOLS=(
   zsh
   git
   tmux
+  xclip
 )
 
 green_echo "Installing essential tools: ${ESSENTIAL_TOOLS[*]}"
