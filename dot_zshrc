@@ -8,6 +8,11 @@ fi
 # Load completions on start
 autoload -U compinit && compinit
 
+# Enable multi line command edit with C-x C-e
+autoload -U edit-command-line
+zle -N edit-command-line
+bindkey '\C-x\C-e' edit-command-line
+
 source ~/.zsh/powerlevel10k/powerlevel10k.zsh-theme
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
