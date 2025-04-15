@@ -30,6 +30,7 @@ ESSENTIAL_TOOLS=(
   git
   tmux
   xclip
+  xsel
 )
 
 green_echo "Installing essential tools: ${ESSENTIAL_TOOLS[*]}"
