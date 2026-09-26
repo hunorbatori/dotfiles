@@ -194,11 +194,12 @@ set_default_shell_zsh() {
     fi
 
     if [ "$(basename "$SHELL")" != "zsh" ]; then
-        green_echo "Setting zsh as the default shell"
-        chsh -s "$zsh_path"
         if [ "$OS" = "bazzite" ]; then
-            green_echo "Note: Bazzite recommends setting the shell via your terminal emulator's profile (Ptyxis: Preferences > Profile > Command) rather than relying on the system default. chsh has been run, but if your terminal doesn't pick it up, set it there too."
-        fi
+            green_echo "Bazzite recommends setting the shell via your terminal emulator's profile. Skipping setting it as default shell"
+        else
+            green_echo "Setting zsh as the default shell"
+            chsh -s "$zsh_path"
+	fi
     else
         green_echo "Default shell is already zsh, skipping..."
     fi
