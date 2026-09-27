@@ -1,0 +1,5 @@
+if [[ -x /home/linuxbrew/.linuxbrew/bin/zsh ]]; then
+    export SHELL="/home/linuxbrew/.linuxbrew/bin/zsh"
+elif [[ -x /usr/bin/zsh ]]; then
+    export SHELL="/usr/bin/zsh"
+fi
