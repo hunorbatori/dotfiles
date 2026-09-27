@@ -42,8 +42,10 @@ fpath=(~/.zsh/zsh-completions/src $fpath)
 eval "$(jump shell zsh)"
 
 # KeyBindings
-# Jump forward in prompt on ctrl+arrowRight
-bindkey "^[[1;5C" forward-word
+# Accept one word of the suggestion on arrowRight
+bindkey "^[[C" forward-word
+# Accept the whole suggestion on ctrl+arrowRight
+bindkey "^[[1;5C" autosuggest-accept
 # Jump backward in prompt on ctrl+arrowLeft
 bindkey "^[[1;5D" backward-word
 # History search on ctrl+arrowUp
