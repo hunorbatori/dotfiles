@@ -238,6 +238,12 @@ install_zsh_plugins() {
         git clone https://github.com/Aloxaf/fzf-tab ~/.zsh/fzf-tab
     fi
 
+    if [ -d ~/.zsh/zsh-autocomplete/.git ]; then
+        green_echo "zsh-autocomplete is already cloned, skipping..."
+    else
+        git clone --depth 1 -- https://github.com/marlonrichert/zsh-autocomplete.git ~/.zsh/zsh-autocomplete
+    fi
+
     if [ -d ~/.zsh/fzf/.git ]; then
         green_echo "fzf is already cloned, skipping..."
     else

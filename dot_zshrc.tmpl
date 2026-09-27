@@ -26,11 +26,13 @@ source ~/.zsh/powerlevel10k/powerlevel10k.zsh-theme
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
 source ~/.zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-source ~/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh
-source ~/.zsh-autosuggestions.zsh
+source ~/.zsh/zsh-autocomplete/zsh-autocomplete.plugin.zsh
+# source ~/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh
+# source ~/.zsh-autosuggestions.zsh
 source ~/.nnn-conf
-source ~/.zsh/fzf-tab/fzf-tab.plugin.zsh
+# source ~/.zsh/fzf-tab/fzf-tab.plugin.zsh
 source ~/.global_functions
+
 
 fpath=(~/.zsh/zsh-completions/src $fpath)
 
@@ -72,7 +74,11 @@ export EDITOR=nano
 # Color folders according to ls --color
 zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}"
 # Disable default menu in favow of fzf-tab
-zstyle ':completion:*' menu no
+# zstyle ':completion:*' menu no
 
 # Aliases
 alias ls='ls --color'
+# Force Kate to use the X11 (XCB) backend on Wayland to fix the horizontal-line UI bug
+if (( $+commands[kate] )); then
+    alias kate='QT_QPA_PLATFORM=xcb command kate'
+fi
