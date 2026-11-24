@@ -12,29 +12,29 @@ if [ -x /home/linuxbrew/.linuxbrew/bin/brew ]; then
 fi
 {{ end -}}
 
-# Load completions on start
-autoload -U compinit && compinit
-
 # Enable multi line command edit with C-x C-e
 autoload -U edit-command-line
 zle -N edit-command-line
 bindkey '\C-x\C-e' edit-command-line
+
+fpath=(~/.zsh/zsh-completions/src $fpath)
+
+# Load completions on start
+autoload -U compinit && compinit
+source ~/.zsh/fzf-tab/fzf-tab.plugin.zsh
 
 source ~/.zsh/powerlevel10k/powerlevel10k.zsh-theme
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
-source ~/.zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-source ~/.zsh/zsh-autocomplete/zsh-autocomplete.plugin.zsh
-# source ~/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh
+# source ~/.zsh/zsh-autocomplete/zsh-autocomplete.plugin.zsh
 # source ~/.zsh-autosuggestions.zsh
+source ~/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh
+source ~/.zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+
 source ~/.nnn-conf
-# source ~/.zsh/fzf-tab/fzf-tab.plugin.zsh
 source ~/.global_functions
-
-
-fpath=(~/.zsh/zsh-completions/src $fpath)
 
 
 # Enable fzf fuzzy find shell integration
@@ -44,6 +44,14 @@ fpath=(~/.zsh/zsh-completions/src $fpath)
 eval "$(jump shell zsh)"
 
 # KeyBindings
+
+# Bind Up/Down arrows to history search (filter by current input)
+autoload -Uz up-line-or-beginning-search down-line-or-beginning-search
+zle -N up-line-or-beginning-search
+zle -N down-line-or-beginning-search
+bindkey '^[[A' up-line-or-beginning-search   # Up Arrow
+bindkey '^[[B' down-line-or-beginning-search # Down Arrow
+
 # Accept one word of the suggestion on arrowRight
 bindkey "^[[C" forward-word
 # Accept the whole suggestion on ctrl+arrowRight
@@ -54,6 +62,11 @@ bindkey "^[[1;5D" backward-word
 bindkey "^[[1;5A" history-search-backward
 # History search on ctrl+arrowDown
 bindkey "^[[1;5B" history-search-forward
+
+# Tell zsh-autosuggestions not to clear suggestions during history search
+ZSH_AUTOSUGGEST_CLEAR_WIDGETS=("${(@)ZSH_AUTOSUGGEST_CLEAR_WIDGETS:#(up|down)-line-or-history}")
+ZSH_AUTOSUGGEST_CLEAR_WIDGETS+=(history-substring-search-up history-substring-search-down)
+ZSH_AUTOSUGGEST_IGNORE_WIDGETS+=(up-line-or-beginning-search down-line-or-beginning-search)
 
 # Enable and configure zsh histroy
 HISTFILE=~/.zsh_history
