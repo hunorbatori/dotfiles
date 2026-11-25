@@ -21,6 +21,9 @@ fpath=(~/.zsh/zsh-completions/src $fpath)
 
 # Load completions on start
 autoload -U compinit && compinit
+# Disable default menu in favor of fzf-tab (recommended by fzf-tab)
+zstyle ':completion:*' menu no
+# fzf-tab: after compinit, before plugins that wrap widgets (autosuggestions etc.)
 source ~/.zsh/fzf-tab/fzf-tab.plugin.zsh
 
 source ~/.zsh/powerlevel10k/powerlevel10k.zsh-theme
@@ -28,8 +31,6 @@ source ~/.zsh/powerlevel10k/powerlevel10k.zsh-theme
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
-# source ~/.zsh/zsh-autocomplete/zsh-autocomplete.plugin.zsh
-# source ~/.zsh-autosuggestions.zsh
 source ~/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh
 source ~/.zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
@@ -37,25 +38,56 @@ source ~/.nnn-conf
 source ~/.global_functions
 
 
-# Enable fzf fuzzy find shell integration
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+# Enable fzf fuzzy find shell integration (binary on PATH + key bindings/completion)
+[[ -d ~/.zsh/fzf/bin ]] && path+=(~/.zsh/fzf/bin)
+(( $+commands[fzf] )) && source <(fzf --zsh)
 
 # Enable jump
 eval "$(jump shell zsh)"
 
 # KeyBindings
 
-# Bind Up/Down arrows to history search (filter by current input)
-autoload -Uz up-line-or-beginning-search down-line-or-beginning-search
+# Bind Up arrow to history search (filter by current input)
+autoload -Uz up-line-or-beginning-search
 zle -N up-line-or-beginning-search
-zle -N down-line-or-beginning-search
-bindkey '^[[A' up-line-or-beginning-search   # Up Arrow
-bindkey '^[[B' down-line-or-beginning-search # Down Arrow
 
-# Accept one word of the suggestion on arrowRight
-bindkey "^[[C" forward-word
-# Accept the whole suggestion on ctrl+arrowRight
-bindkey "^[[1;5C" autosuggest-accept
+bindkey '^[[A' up-line-or-beginning-search   # Up Arrow
+bindkey '^[OA' up-line-or-beginning-search   # Up Arrow (application mode)
+
+# Autosuggestions
+ZSH_AUTOSUGGEST_STRATEGY=(history completion)
+# History menu (Down arrow): substring match, inline list
+FZF_CTRL_R_OPTS="--exact --height=40% --layout=reverse"
+
+# Right arrow: accept suggestion word by word; otherwise normal cursor movement
+my-right() {
+  if (( CURSOR == ${#BUFFER} )) && [[ -n $POSTDISPLAY ]]; then
+    zle forward-word
+  else
+    zle forward-char
+  fi
+}
+# Tab: accept the whole suggestion; otherwise normal (fzf-tab) completion
+my-tab() {
+  if [[ -n $POSTDISPLAY ]]; then
+    zle autosuggest-accept
+  else
+    zle fzf-tab-complete
+  fi
+}
+# Down arrow: fzf list of history entries matching the typed text
+my-down() { zle fzf-history-widget }
+
+zle -N my-right
+zle -N my-tab
+zle -N my-down
+# Must be ignored by autosuggestions, or it clears the suggestion before they run
+ZSH_AUTOSUGGEST_IGNORE_WIDGETS+=(up-line-or-beginning-search my-right my-tab my-down)
+
+for k in '^[[C' '^[OC'; do bindkey $k my-right; done   # Right Arrow
+bindkey '^I' my-tab                                    # Tab
+for k in '^[[B' '^[OB'; do bindkey $k my-down; done    # Down Arrow
+
 # Jump backward in prompt on ctrl+arrowLeft
 bindkey "^[[1;5D" backward-word
 # History search on ctrl+arrowUp
@@ -63,16 +95,10 @@ bindkey "^[[1;5A" history-search-backward
 # History search on ctrl+arrowDown
 bindkey "^[[1;5B" history-search-forward
 
-# Tell zsh-autosuggestions not to clear suggestions during history search
-ZSH_AUTOSUGGEST_CLEAR_WIDGETS=("${(@)ZSH_AUTOSUGGEST_CLEAR_WIDGETS:#(up|down)-line-or-history}")
-ZSH_AUTOSUGGEST_CLEAR_WIDGETS+=(history-substring-search-up history-substring-search-down)
-ZSH_AUTOSUGGEST_IGNORE_WIDGETS+=(up-line-or-beginning-search down-line-or-beginning-search)
-
 # Enable and configure zsh histroy
 HISTFILE=~/.zsh_history
 HISTSIZE=10000
 SAVEHIST=10000
-HISTUDP=erase
 setopt share_history
 setopt hist_ignore_space
 setopt hist_ignore_all_dups
@@ -86,8 +112,6 @@ export EDITOR=nano
 # Completion styling
 # Color folders according to ls --color
 zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}"
-# Disable default menu in favow of fzf-tab
-# zstyle ':completion:*' menu no
 
 # Aliases
 alias ls='ls --color'
